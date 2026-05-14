@@ -1,6 +1,7 @@
 /******** kbd.c file ******************/
 #define USE_KEYSET2
 #include "kbd.h"
+#include "log_config.h"
 
 #include "defines.h"
 #include "exceptions.h"
@@ -67,7 +68,7 @@ void kbd_handler() {
   /********* catch Control-C ****************/
   if (control && scode == 0x21) {  // Control-C
     // send number 2 signal to processes on KBD
-    printf("Control-C: %d\n", control);
+    LOG_INFO("Control-C: %d\n", control);
     control = 0;
     return;
   }
@@ -75,10 +76,10 @@ void kbd_handler() {
     c = ltab[scode];  // lowercase
   else
     c = utab[scode];  // uppercase
-  if (c != '\r') printf("kbd interrupt: c=%c\n", c); 
+  if (c != '\r') LOG_INFO("kbd interrupt: c=%c\n", c); 
   if (control && scode == 0x23) {  // Control-D
     c = 0x04;
-    printf("Control-D: c = %x\n", c);
+    LOG_INFO("Control-D: c = %x\n", c);
   }
   kp->buf[kp->head++] = c;
   kp->head %= 128;
